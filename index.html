@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OpenCode vs Kilo Code comparison: differences, similarities, benchmark results, technical details and KiloBench model rankings.">
+  <meta property="og:title" content="OpenCode vs Kilo Code — Differences, Similarities, Benchmark">
+  <meta property="og:description" content="OpenCode (anomalyco) vs Kilo Code (Kilo Org) comparison: agents, benchmark, technical details, and KiloBench.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>OpenCode vs Kilo Code — Differences, Similarities, Benchmark</title>
+  <style>:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2333;--border:#30363d;--green:#3fb950;--green-dim:#2d8a3a;--cyan:#58a6ff;--orange:#d29922;--red:#f85149;--purple:#bc8cff;--pink:#f778ba;--text:#e6edf3;--text-bright:#f0f6fc;--dim:#8b949e;--opencode:#58a6ff;--kilo:#3fb950;--success:#3fb950;--secondary:#bc8cff;--accent:#58a6ff;--error:#f85149;--glow:0 0 8px rgba(88,166,255,.12)}*{margin:0;padding:0;box-sizing:border-box}body{background:#010409;color:var(--text);font-family:'JetBrains Mono',monospace;line-height:1.7;min-height:100vh;overflow-x:hidden;display:flex;align-items:center;justify-content:center;padding:20px}::selection{background:var(--accent);color:#000}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0d1117}::-webkit-scrollbar-thumb{background:var(--border)}.terminal-window{max-width:1140px;width:100%;background:var(--bg);border:1px solid var(--border);box-shadow:0 0 30px rgba(88,166,255,.04),0 8px 32px rgba(0,0,0,.6);overflow:hidden;position:relative}.terminal-titlebar{display:flex;align-items:center;padding:10px 16px;background:#0d1117;border-bottom:1px solid var(--border);user-select:none;gap:12px}.terminal-dots{display:flex;gap:7px;flex-shrink:0}.terminal-dot{width:11px;height:11px;border-radius:50%}.terminal-dot.red{background:#ff5f56}.terminal-dot.yellow{background:#ffbd2e}.terminal-dot.green{background:#27c93f}.terminal-title{flex:1;text-align:center;font-size:.75rem;color:var(--dim);letter-spacing:.3px}.terminal-title span{color:var(--cyan)}.terminal-body{padding:20px 24px 0}@media (max-width:700px){body{padding:8px}.terminal-body{padding:12px 12px 0}.terminal-titlebar{padding:8px 12px}}.container{max-width:1100px;margin:0 auto}.prompt-line{color:var(--accent);font-size:.8rem;margin-bottom:16px;display:flex;align-items:center;gap:8px}.prompt-line .prompt{color:var(--accent);font-weight:600}.prompt-line .cmd{color:var(--text)}.prompt-line .cursor{display:inline-block;width:8px;height:16px;background:var(--accent);animation:blink 1s step-end infinite}.glow-text{text-shadow:0 0 8px rgba(88,166,255,.12)}.hero{padding:32px 0 28px;text-align:center}.logos{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}.logo-box{display:flex;align-items:center;gap:10px;padding:6px 16px;border-radius:6px;font-weight:700;font-size:1.1rem}.logo-img{height:32px;width:auto}.logo-box.open{background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2)}.logo-box.kilo{background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.2)}.vs{font-size:.85rem;color:var(--dim);font-weight:600;padding:2px 10px;border:1px dashed var(--border);border-radius:4px}.hero h1{font-size:1.6rem;font-weight:800;margin-bottom:4px;color:var(--text-bright)}.hero h1 .hl-o{color:var(--opencode)}.hero h1 .hl-k{color:var(--kilo)}.hero h1 .hl-d{color:var(--dim)}.hero p{color:var(--dim);font-size:.85rem}.typed-wrap{margin-top:10px;height:24px}.typed{display:inline-block;padding:2px 14px;background:var(--surface);border:1px solid var(--border);font-size:.75rem;color:var(--dim);white-space:nowrap;overflow:hidden;border-right:2px solid var(--accent)}@keyframes blink{50%{border-color:transparent}}.tab-panel{display:none}.tab-panel.active{display:block}section{padding:0 0 36px}section h2{font-size:.8rem;font-weight:400;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--dim)}section h2 .prompt-sign{color:var(--accent);font-weight:600}section h2 .section-cmd{color:var(--text-bright);font-weight:600}section h2 .badge{font-size:.65rem;background:var(--surface2);padding:1px 8px;color:var(--dim);font-weight:400}.relation{text-align:center;padding:4px 0}.relation-box{display:inline-flex;flex-direction:column;align-items:center;gap:6px;padding:16px 32px;background:var(--surface);border:1px solid var(--border)}.relation-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center}.rel-item{padding:6px 14px;font-weight:600;font-size:.82rem}.rel-item.upstream{background:rgba(88,166,255,.1);color:var(--opencode);border:1px solid rgba(88,166,255,.3)}.rel-item.fork{background:rgba(63,185,80,.1);color:var(--kilo);border:1px solid rgba(63,185,80,.25)}.arrow{color:var(--dim);font-size:1rem}.rel-desc{color:var(--dim);font-size:.72rem;margin-top:4px}.bench-grid{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:24px}.bench-card{background:var(--surface);border:1px solid var(--border);padding:18px}.bench-card h3{font-size:.9rem;margin-bottom:14px;display:flex;align-items:center;gap:6px}.bench-card h3 span{font-size:1rem}.bar-set{display:flex;flex-direction:column;gap:10px}.bar-row{display:flex;align-items:center;gap:10px;font-size:.75rem}.bar-row .label{width:80px;flex-shrink:0;color:var(--dim)}.bar-row .val{width:50px;text-align:right;flex-shrink:0;font-weight:600}.bar-track{flex:1;height:14px;background:var(--surface2);overflow:hidden;display:flex}.bar-fill{height:100%;transition:width .8s ease}.bench-note{font-size:.68rem;color:var(--dim);margin-top:8px;border-top:1px solid var(--border);padding-top:8px;display:flex;align-items:center;gap:6px}.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}.stat-item{background:var(--surface);border:1px solid var(--border);padding:12px;text-align:center}.stat-item .num{font-size:1.4rem;font-weight:800}.stat-item .num.blue{color:var(--opencode)}.stat-item .num.green{color:var(--kilo)}.stat-item .lbl{font-size:.7rem;color:var(--dim);margin-top:2px}.stat-item .sub{font-size:.65rem;color:var(--dim)}.kb-wrap{overflow-x:auto;border:1px solid var(--border);background:var(--surface)}table{width:100%;border-collapse:collapse;font-size:.8rem}thead{background:var(--surface2)}th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}th{font-weight:700;white-space:nowrap;font-size:.75rem}tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)}.rank-num{font-weight:700;color:var(--dim)}.cost-bar{display:inline-block;height:10px;min-width:2px;background:linear-gradient(90deg,var(--accent),var(--secondary));vertical-align:middle;margin-right:6px}.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}@media (max-width:700px){.tech-grid{grid-template-columns:1fr}}.tech-card{background:var(--surface);border:1px solid var(--border);padding:18px}.tech-card h3{font-size:.9rem;margin-bottom:12px}.tech-card h3 .hl-open{color:var(--opencode)}.tech-card h3 .hl-kilo{color:var(--kilo)}.tech-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.8rem;border-bottom:1px solid rgba(48,54,61,.4)}.tech-row:last-child{border-bottom:none}.tech-row .k{color:var(--dim)}.tech-row .v{text-align:right;max-width:55%}.arch-diagram{background:var(--surface);border:1px solid var(--border);padding:18px;margin-bottom:20px;text-align:center}.arch-diagram pre{font-size:.7rem;line-height:1.5;text-align:left;display:inline-block;color:var(--dim)}.arch-diagram pre .hl-b{color:var(--opencode);font-weight:600}.arch-diagram pre .hl-g{color:var(--kilo);font-weight:600}.arch-diagram pre .hl-o{color:var(--orange)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media (max-width:700px){.grid-2{grid-template-columns:1fr}}.card{background:var(--surface);border:1px solid var(--border);padding:20px;transition:border-color .2s}.card:hover{border-color:var(--dim)}.card h3{font-size:.85rem;font-weight:700;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border)}.card h3 .hl-open{color:var(--opencode)}.card h3 .hl-kilo{color:var(--kilo)}.card ul{list-style:none}.card ul li{padding:5px 0;font-size:.82rem;display:flex;gap:10px;align-items:flex-start}.card ul li::before{content:">";color:var(--dim);flex-shrink:0}.sim-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}.sim-item{background:var(--surface2);border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:.78rem}.sim-item .check{color:var(--green);font-size:1rem;flex-shrink:0}.table-wrap{overflow-x:auto;border:1px solid var(--border);background:var(--surface)}.table-wrap table{font-size:.78rem}.table-wrap th,.table-wrap td{padding:10px 14px}.table-wrap th:nth-child(2){color:var(--opencode)}.table-wrap th:nth-child(3){color:var(--kilo)}.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600}.tag.yes{background:rgba(63,185,80,.15);color:var(--green)}.tag.no{background:rgba(248,81,73,.15);color:var(--red)}.tag.partial{background:rgba(210,153,34,.15);color:var(--orange)}.summary-box{background:var(--surface);border:1px solid var(--border);padding:20px}.summary-box p{font-size:.85rem;margin-bottom:10px}.summary-box p:last-child{margin-bottom:0}footer{border-top:1px solid var(--border);padding:20px 24px;text-align:center;color:var(--dim);font-size:.72rem;background:var(--surface)}footer a{color:var(--dim);text-decoration:none}footer a:hover{text-decoration:underline;color:var(--accent)}footer .links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:6px}.scanline{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(88,166,255,.015) 2px,rgba(88,166,255,.015) 4px);z-index:999}.crt-overlay{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.45) 100%);z-index:998}.fade-in{opacity:0;transform:translateY(12px);animation:fadeIn .5s ease forwards}@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.open-layout{display:flex;gap:0;min-height:400px}.open-main{flex:1;min-width:0;padding-right:20px}.open-sidebar{width:200px;flex-shrink:0;border-left:1px solid var(--border);padding-left:16px;display:flex;flex-direction:column;gap:10px}@media (max-width:800px){.open-layout{flex-direction:column}.open-sidebar{width:100%;border-left:none;padding-left:0;margin-top:16px}.open-main{padding-right:0}}.agent-bar{display:flex;flex-wrap:wrap;margin-bottom:24px;gap:1px}.agent-btn{padding:5px 12px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:inherit;font-size:.7rem;cursor:pointer;transition:all .1s;display:flex;align-items:center;gap:5px;letter-spacing:.2px}.agent-btn:hover{background:var(--surface2);color:var(--text)}.agent-btn.active{color:var(--text-bright);border-color:var(--text-bright);background:var(--surface2)}.agent-btn .adot{width:7px;height:7px;display:inline-block;flex-shrink:0}.agent-btn .adot.c{background:var(--accent)}.agent-btn .adot.m{background:var(--secondary)}.agent-btn .adot.g{background:var(--success)}.agent-btn .adot.y{background:var(--orange)}.agent-btn .adot.r{background:var(--error)}.sb-card{background:var(--surface);border:1px solid var(--border);padding:10px}.sb-card h4{font-size:.6rem;text-transform:uppercase;letter-spacing:.6px;color:var(--dim);margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)}.sb-row{display:flex;justify-content:space-between;padding:2px 0;font-size:.68rem;line-height:1.6}.sb-row .l{color:var(--dim)}.sb-row .v{color:var(--text)}.sb-agent-indicator{display:flex;align-items:center;gap:6px;padding:4px 8px;font-size:.72rem;font-weight:600}.sb-agent-indicator.build{color:var(--secondary);background:rgba(188,140,255,.08);border:1px solid rgba(188,140,255,.2)}.sb-agent-indicator.plan{color:var(--accent);background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2)}.sb-nav-item{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:.68rem;color:var(--dim)}.sb-nav-item kbd{padding:1px 5px;background:var(--surface2);border:1px solid var(--border);font-family:inherit;font-size:.62rem;color:var(--dim)}.sb-nav-item .action{color:var(--text)}.open-status{display:flex;align-items:center;padding:5px 16px;background:#0d1117;border-top:1px solid var(--border);font-size:.68rem;gap:12px;margin-top:8px}.open-status .st-agent{display:flex;align-items:center;gap:5px;font-weight:600}.open-status .st-agent.b{color:var(--secondary)}.open-status .st-agent.p{color:var(--accent)}.open-status .st-model{color:var(--dim)}.open-status .st-right{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--dim)}.open-status .st-hint{color:var(--dim);display:flex;align-items:center;gap:6px}.open-status .st-hint kbd{padding:1px 5px;background:var(--surface);border:1px solid var(--border);font-family:inherit;font-size:.62rem;color:var(--dim)}.oc-section{position:relative;padding-left:14px;margin-bottom:28px}.oc-section::before{content:'┃';position:absolute;left:0;top:0;color:var(--dim);font-size:.85rem;line-height:1.5;opacity:.5}.prog{font-size:.7rem;letter-spacing:1px}.prog .done{color:var(--accent)}.prog .todo{color:var(--border)}</style>
+</head>
+<body>
+<div class="terminal-window">
+<div class="scanline"></div>
+<div class="crt-overlay"></div>
+
+<div class="terminal-titlebar">
+  <div class="terminal-dots">
+    <div class="terminal-dot red"></div>
+    <div class="terminal-dot yellow"></div>
+    <div class="terminal-dot green"></div>
+  </div>
+  <div class="terminal-title">
+    <span>opencode-vs-kilocode</span> — bash — 80×24
+  </div>
+  <div style="width:52px"></div>
+</div>
+
+<div class="terminal-body">
+
+<header class="hero">
+  <div class="logos">
+    <div class="logo-box open"><img src="opencode-logo-dark.png" alt="OpenCode" class="logo-img"><span>OpenCode</span></div>
+    <span class="vs">vs</span>
+    <div class="logo-box kilo"><img src="kilo-code-logo.png" alt="Kilo Code" class="logo-img"><span>Kilo Code</span></div>
+  </div>
+  <h1><span class="hl-o">OpenCode</span> <span class="hl-d">vs</span> <span class="hl-k">Kilo Code</span></h1>
+  <p>Differences, similarities, benchmark &amp; technical comparison</p>
+  <div class="typed-wrap">
+    <span class="typed" id="typed"></span>
+  </div>
+</header>
+
+<div class="open-layout">
+
+  <div class="open-main">
+
+  <div class="agent-bar">
+    <button class="agent-btn active" data-tab="genel"><span class="adot c"></span> overview</button>
+    <button class="agent-btn" data-tab="benchmark"><span class="adot m"></span> benchmark</button>
+    <button class="agent-btn" data-tab="teknik"><span class="adot y"></span> technical</button>
+    <button class="agent-btn" data-tab="kilobench"><span class="adot g"></span> kilobench</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-genel">
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">cat</span> relationship.md<span class="badge">relationship</span></h2>
+      <div class="relation">
+        <div class="relation-box">
+          <div class="relation-row">
+            <div class="rel-item upstream">OpenCode (anomalyco)</div>
+            <span class="arrow">&#x2192; fork &#x2192;</span>
+            <div class="rel-item fork">Kilo Code (Kilo Org)</div>
+          </div>
+          <div class="rel-desc">Kilo Code is built by forking OpenCode's MIT-licensed codebase. Kilo commits to sending improvements back upstream.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">diff</span> --side-by-side opencode kilocode<span class="badge">side-by-side</span></h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3><span class="hl-open">OpenCode</span></h3>
+          <ul>
+            <li>Upstream project — developed by anomalyco</li>
+            <li>MIT license</li>
+            <li>~182k stars, 22.5k forks, 460+ contributors on GitHub</li>
+            <li>CLI / TUI + Desktop (Tauri) + VS Code</li>
+            <li>Built-in agents: build, plan, general</li>
+            <li>Privacy-first — no code/usage data stored</li>
+            <li>75+ LLM providers (AI SDK + Models.dev)</li>
+            <li>Free models included or BYOK</li>
+            <li>OpenCode Zen (curated model access)</li>
+            <li>OpenCode Go ($5-10/month subscription)</li>
+            <li>Web interface (opencode web)</li>
+            <li>830+ releases published</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="hl-kilo">Kilo Code</span></h3>
+          <ul>
+            <li>OpenCode fork — developed by Kilo Org</li>
+            <li>MIT license (same as OpenCode)</li>
+            <li>~25.5k stars, 2.8k forks on GitHub</li>
+            <li>VS Code + JetBrains (Kotlin) + CLI + Desktop + Mobile</li>
+            <li>Built-in agents: Code, Plan, Ask, Debug, Review</li>
+            <li>Cloud agents &amp; CI/CD integration</li>
+            <li>500+ models, Auto Model Routing</li>
+            <li>Kilo Gateway ($0 + provider pricing)</li>
+            <li>Kilo Pass ($19/$49/$199 monthly subscription)</li>
+            <li>Team collaboration ($15/user/month)</li>
+            <li>Kilo Console web interface</li>
+            <li>Cross-device session sync</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">grep</span> -c "common" comparisons/*<span class="badge">commonalities</span></h2>
+      <div class="sim-list">
+        <div class="sim-item"><span class="check">&#x2714;</span> Open source AI coding agent</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> CLI &amp; TUI interface</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Multi-LLM provider support</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> BYOK (bring your own API key)</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Model Context Protocol (MCP)</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Written in TypeScript</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> npm &amp; curl installation</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Terminal-first design</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Custom agent/mode definition</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> File editing permission system</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Bun workspaces + Turbo monorepo</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> ripgrep file search</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Active community &amp; open source</div>
+        <div class="sim-item"><span class="check">&#x2714;</span> Free + BYOK models</div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">cat</span> agents --list<span class="badge">agent comparison</span></h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="card">
+          <h3><span class="hl-open">OpenCode Agents</span></h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--secondary);"></span>
+                <strong style="color:var(--secondary);font-size:.85rem;">build</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Software development agent — full access (read/write files, run terminal)</span>
+                <span><span style="color:var(--dim);">Author:</span> anomalyco</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript</span>
+                <span><span style="color:var(--dim);">Color:</span> secondary (purple <span style="color:var(--secondary);">&#x25CF;</span>)</span>
+                <span><span style="color:var(--dim);">Source:</span> packages/opencode/agent/build.ts</span>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--accent);"></span>
+                <strong style="color:var(--accent);font-size:.85rem;">plan</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Read-only analysis/planning agent — analyzes codebase, does not write files</span>
+                <span><span style="color:var(--dim);">Author:</span> anomalyco</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript</span>
+                <span><span style="color:var(--dim);">Color:</span> accent (cyan <span style="color:var(--accent);">&#x25CF;</span>)</span>
+                <span><span style="color:var(--dim);">Source:</span> packages/opencode/agent/plan.ts</span>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--dim);"></span>
+                <strong style="color:var(--text);font-size:.85rem;">general</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">subagent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Internal subagent — general-purpose agent guided by system prompt</span>
+                <span><span style="color:var(--dim);">Author:</span> anomalyco</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript</span>
+                <span><span style="color:var(--dim);">Usage:</span> called as sub-agent for complex tasks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3><span class="hl-kilo">Kilo Code Agents</span></h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--kilo);"></span>
+                <strong style="color:var(--kilo);font-size:.85rem;">Code</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Default agent — code writing, editing, file operations</span>
+                <span><span style="color:var(--dim);">Author:</span> Kilo Org</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript (fork)</span>
+                <span><span style="color:var(--dim);">VS Code:</span> packages/kilo-vscode/</span>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--accent);"></span>
+                <strong style="color:var(--accent);font-size:.85rem;">Plan</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Read-only architecture design and analysis agent</span>
+                <span><span style="color:var(--dim);">Author:</span> Kilo Org</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript (fork)</span>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--orange);"></span>
+                <strong style="color:var(--orange);font-size:.85rem;">Ask</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Q&A about codebase — read-only, generates explanations</span>
+                <span><span style="color:var(--dim);">Author:</span> Kilo Org</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript (fork)</span>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--error);"></span>
+                <strong style="color:var(--error);font-size:.85rem;">Debug</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Debugging and troubleshooting agent</span>
+                <span><span style="color:var(--dim);">Author:</span> Kilo Org</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript (fork)</span>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="display:inline-block;width:10px;height:10px;background:var(--purple);"></span>
+                <strong style="color:var(--purple);font-size:.85rem;">Review</strong>
+                <span style="font-size:.65rem;color:var(--dim);background:var(--surface);padding:0 6px;">agent</span>
+              </div>
+              <div style="font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:3px;padding-left:18px;">
+                <span>Code review agent — PR review, code quality analysis</span>
+                <span><span style="color:var(--dim);">Author:</span> Kilo Org</span>
+                <span><span style="color:var(--dim);">Language:</span> TypeScript (fork)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="tab-panel" id="tab-benchmark">
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">benchmark</span> ci-tests --platform linux,windows<span class="badge">GitHub Actions times</span></h2>
+      <div class="bench-grid">
+        <div class="bench-card">
+          <h3><span>&#x1F9F9;</span> Linux CLI Suite</h3>
+          <div class="bar-set">
+            <div class="bar-row">
+              <span class="label">OpenCode</span>
+              <div class="bar-track"><div class="bar-fill" style="width:52%;background:var(--opencode);"></div></div>
+              <span class="val" style="color:var(--opencode)">173s</span>
+            </div>
+            <div class="bar-row">
+              <span class="label">Kilo Code</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--kilo);"></div></div>
+              <span class="val" style="color:var(--kilo)">332s</span>
+            </div>
+          </div>
+          <div class="bench-note"><span style="color:var(--accent);font-weight:700;">&#x2192;</span> Kilo Code ~1.9x slower. The difference is due to a regression in TUI plugin tests.</div>
+        </div>
+        <div class="bench-card">
+          <h3><span>&#x1F9F9;</span> Windows CLI Suite</h3>
+          <div class="bar-set">
+            <div class="bar-row">
+              <span class="label">OpenCode</span>
+              <div class="bar-track"><div class="bar-fill" style="width:49%;background:var(--opencode);"></div></div>
+              <span class="val" style="color:var(--opencode)">335s</span>
+            </div>
+            <div class="bar-row">
+              <span class="label">Kilo Code</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--kilo);"></div></div>
+              <span class="val" style="color:var(--kilo)">681s</span>
+            </div>
+          </div>
+          <div class="bench-note"><span style="color:var(--accent);font-weight:700;">&#x2192;</span> Kilo Code ~2x slower. Plugin tests on Windows: 683s vs 0.48s (1423x difference).</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">benchmark</span> file-search --repo 42k<span class="badge">OpenCode improvements</span></h2>
+      <div class="bench-grid">
+        <div class="bench-card">
+          <h3><span>&#x1F4C1;</span> Ripgrep Tree (42k files)</h3>
+          <div class="bar-set">
+            <div class="bar-row">
+              <span class="label">Before</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--error);"></div></div>
+              <span class="val" style="color:var(--error)">8,625ms</span>
+            </div>
+            <div class="bar-row">
+              <span class="label">After</span>
+              <div class="bar-track"><div class="bar-fill" style="width:0.9%;background:var(--success);"></div></div>
+              <span class="val" style="color:var(--success)">79ms</span>
+            </div>
+          </div>
+          <div class="bench-note"><span style="color:var(--accent);font-weight:700;">&#x2192;</span> 109x speedup. Ripgrep.tree() optimization via PR #6507.</div>
+        </div>
+        <div class="bench-card">
+          <h3><span>&#x1F4C2;</span> Directory Picker (deep path)</h3>
+          <div class="bar-set">
+            <div class="bar-row">
+              <span class="label">Before</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--error);"></div></div>
+              <span class="val" style="color:var(--error)">30-40s</span>
+            </div>
+            <div class="bar-row">
+              <span class="label">After</span>
+              <div class="bar-track"><div class="bar-fill" style="width:0.25%;background:var(--success);"></div></div>
+              <span class="val" style="color:var(--success)">&lt;100ms</span>
+            </div>
+          </div>
+          <div class="bench-note"><span style="color:var(--accent);font-weight:700;">&#x2192;</span> 400x improvement. PR #15339: CPU %1600&#8594;%10, RAM 7.9GB&#8594;400MB.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">watch</span> github-stats --since 2025<span class="badge">GitHub metrics</span></h2>
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="num blue">182k</div>
+          <div class="lbl">OpenCode Stars</div>
+          <div class="sub">460+ contributors</div>
+        </div>
+        <div class="stat-item">
+          <div class="num green">25.5k</div>
+          <div class="lbl">Kilo Code Stars</div>
+          <div class="sub">newer project</div>
+        </div>
+        <div class="stat-item">
+          <div class="num blue">830</div>
+          <div class="lbl">OpenCode Releases</div>
+        </div>
+        <div class="stat-item">
+          <div class="num green">443</div>
+          <div class="lbl">Kilo Code Releases</div>
+        </div>
+        <div class="stat-item">
+          <div class="num blue">22.5k</div>
+          <div class="lbl">OpenCode Forks</div>
+        </div>
+        <div class="stat-item">
+          <div class="num green">2.8k</div>
+          <div class="lbl">Kilo Code Forks</div>
+        </div>
+        <div class="stat-item">
+          <div class="num" style="color:var(--purple)">7.1:1</div>
+          <div class="lbl">Star Ratio</div>
+          <div class="sub">OpenCode has larger community</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="tab-panel" id="tab-teknik">
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">cat</span> architecture.md<span class="badge">architecture</span></h2>
+      <div class="arch-diagram">
+        <pre>
+<span class="hl-b">OpenCode Architecture:</span>
+  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+  &#x2502;  <span class="hl-b">CLI / TUI</span>   &#x2502;  <span class="hl-o">terminal-ui (Ink + React)</span>
+  &#x2502;  <span class="hl-b">Server</span>       &#x2502;  <span class="hl-o">Hono HTTP + Server-Sent Events</span>
+  &#x2502;  <span class="hl-b">Tools</span>        &#x2502;  <span class="hl-o">ripgrep, fff picker, glob, bash</span>
+  &#x2502;  <span class="hl-b">AI SDK</span>       &#x2502;  <span class="hl-o">ai + @ai-sdk/* (75+ provider)</span>
+  &#x2502;  <span class="hl-b">Runtime</span>      &#x2502;  <span class="hl-o">Effect functional runtime</span>
+  &#x2502;  <span class="hl-b">DB</span>           &#x2502;  <span class="hl-o">drizzle-orm + SQLite/PG</span>
+  &#x2502;  <span class="hl-b">Desktop</span>      &#x2502;  <span class="hl-o">Tauri (Rust)</span>
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+
+<span class="hl-g">Kilo Code Architecture:</span>
+  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+  &#x2502;  <span class="hl-g">Kilo UX Layer</span>               &#x2502;  <span class="hl-o">streamlined onboarding, UI</span>
+  &#x2502;  <span class="hl-g">Kilo Gateway &amp; Auth</span>         &#x2502;  <span class="hl-o">model routing, Kilo Pass</span>
+  &#x2502;  <span class="hl-g">Cloud Agents &amp; CI/CD</span>        &#x2502;  <span class="hl-o">remote execution, --auto</span>
+  &#x2502;  <span class="hl-g">Kilo Daemon &amp; Console</span>       &#x2502;  <span class="hl-o">background server, web UI</span>
+  &#x2502;  <span class="hl-g">JetBrains Plugin</span>            &#x2502;  <span class="hl-o">Kotlin native</span>
+  &#x2502;  <span class="hl-g">OpenCode Server Core (fork)</span> &#x2502;  <span class="hl-o">shared engine</span>
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+        </pre>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">cat</span> package.json | jq '.dependencies'<span class="badge">tech stack</span></h2>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h3><span class="hl-open">OpenCode</span></h3>
+          <div class="tech-row"><span class="k">Primary Language</span><span class="v">TypeScript (71.2%)</span></div>
+          <div class="tech-row"><span class="k">Secondary Language</span><span class="v">MDX (25.1%), CSS (3.2%)</span></div>
+          <div class="tech-row"><span class="k">Desktop</span><span class="v">Tauri (Rust)</span></div>
+          <div class="tech-row"><span class="k">Web Framework</span><span class="v">Hono</span></div>
+          <div class="tech-row"><span class="k">Functional Runtime</span><span class="v">Effect</span></div>
+          <div class="tech-row"><span class="k">UI Framework</span><span class="v">Solid.js + Ink (CLI)</span></div>
+          <div class="tech-row"><span class="k">Database</span><span class="v">drizzle-orm</span></div>
+          <div class="tech-row"><span class="k">AI SDK</span><span class="v">ai + @ai-sdk/*</span></div>
+          <div class="tech-row"><span class="k">Search Engine</span><span class="v">ripgrep + fff picker</span></div>
+          <div class="tech-row"><span class="k">Package Mgr</span><span class="v">Bun workspaces</span></div>
+          <div class="tech-row"><span class="k">Build</span><span class="v">Turbo</span></div>
+          <div class="tech-row"><span class="k">Provider Count</span><span class="v">75+</span></div>
+        </div>
+        <div class="tech-card">
+          <h3><span class="hl-kilo">Kilo Code</span></h3>
+          <div class="tech-row"><span class="k">Primary Language</span><span class="v">TypeScript (83.1%)</span></div>
+          <div class="tech-row"><span class="k">Secondary Language</span><span class="v">Kotlin (12.8%)</span></div>
+          <div class="tech-row"><span class="k">JetBrains</span><span class="v">Kotlin native plugin</span></div>
+          <div class="tech-row"><span class="k">VS Code</span><span class="v">TypeScript extension</span></div>
+          <div class="tech-row"><span class="k">Server Core</span><span class="v">OpenCode fork (Hono+Effect)</span></div>
+          <div class="tech-row"><span class="k">Gateway</span><span class="v">Kilo Gateway (custom)</span></div>
+          <div class="tech-row"><span class="k">Cloud Agents</span><span class="v">Kilo Cloud infra</span></div>
+          <div class="tech-row"><span class="k">Mobile</span><span class="v">React Native?</span></div>
+          <div class="tech-row"><span class="k">Package Mgr</span><span class="v">Bun workspaces</span></div>
+          <div class="tech-row"><span class="k">Build</span><span class="v">Turbo</span></div>
+          <div class="tech-row"><span class="k">Provider Count</span><span class="v">500+ (via Kilo Gateway)</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">ls</span> -la packages/<span class="badge">monorepo</span></h2>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h3><span class="hl-open">OpenCode</span></h3>
+          <div class="tech-row"><span class="k">packages/opencode</span><span class="v">core server, CLI, tools</span></div>
+          <div class="tech-row"><span class="k">packages/sdk</span><span class="v">client SDK</span></div>
+          <div class="tech-row"><span class="k">packages/plugin</span><span class="v">plugin API</span></div>
+          <div class="tech-row"><span class="k">packages/ui</span><span class="v">UI components (Solid)</span></div>
+          <div class="tech-row"><span class="k">packages/app</span><span class="v">web app</span></div>
+          <div class="tech-row"><span class="k">packages/desktop</span><span class="v">Tauri desktop</span></div>
+          <div class="tech-row"><span class="k">packages/console-*</span><span class="v">SaaS console</span></div>
+          <div class="tech-row"><span class="k">sdks/vscode</span><span class="v">VS Code extension</span></div>
+          <div class="tech-row"><span class="k">perf/</span><span class="v">benchmark scripts</span></div>
+          <div class="tech-row"><span class="k">20+</span><span class="v">total packages</span></div>
+        </div>
+        <div class="tech-card">
+          <h3><span class="hl-kilo">Kilo Code</span></h3>
+          <div class="tech-row"><span class="k">packages/kilo-cli</span><span class="v">CLI (OpenCode fork)</span></div>
+          <div class="tech-row"><span class="k">packages/kilo-vscode</span><span class="v">VS Code extension</span></div>
+          <div class="tech-row"><span class="k">packages/kilo-jetbrains</span><span class="v">JetBrains plugin</span></div>
+          <div class="tech-row"><span class="k">packages/kilo-console</span><span class="v">web console</span></div>
+          <div class="tech-row"><span class="k">packages/kilo-daemon</span><span class="v">background server</span></div>
+          <div class="tech-row"><span class="k">packages/kilo-gateway</span><span class="v">model gateway</span></div>
+          <div class="tech-row"><span class="k">packages/cloud-agents</span><span class="v">cloud execution</span></div>
+          <div class="tech-row"><span class="k">perf/</span><span class="v">benchmark scripts</span></div>
+          <div class="tech-row"><span class="k">15+</span><span class="v">total packages</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">diff</span> --full opencode kilocode | head -40<span class="badge">30+ features</span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>OpenCode</th><th>Kilo Code</th></tr></thead>
+          <tbody>
+            <tr><td>Base</td><td>Upstream project</td><td>OpenCode fork</td></tr>
+            <tr><td>License</td><td>MIT</td><td>MIT</td></tr>
+            <tr><td>Developer</td><td>anomalyco</td><td>Kilo Org</td></tr>
+            <tr><td>GitHub Stars</td><td>~182,059</td><td>~25,500</td></tr>
+            <tr><td>Forks</td><td>22,506</td><td>2,800</td></tr>
+            <tr><td>Contributors</td><td>460+</td><td>smaller team</td></tr>
+            <tr><td>Releases</td><td>830+</td><td>443</td></tr>
+            <tr><td>CLI / TUI</td><td><span class="tag yes">Yes</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>VS Code Extension</td><td><span class="tag yes">Yes</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>JetBrains Support</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes (Kotlin)</span></td></tr>
+            <tr><td>Desktop App</td><td><span class="tag partial">Tauri (Beta)</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Mobile App</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Cloud Agents</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Team Collaboration</td><td><span class="tag no">No</span></td><td><span class="tag yes">$15/user/month</span></td></tr>
+            <tr><td>Code Review</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>CI/CD (--auto)</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Cross-device Sync</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Built-in Agents</td><td>build, plan, general</td><td>Code, Plan, Ask, Debug, Review</td></tr>
+            <tr><td>Agent Language</td><td>TypeScript (anomalyco)</td><td>TypeScript (Kilo Org fork)</td></tr>
+            <tr><td>Agent Colors</td><td>build=purple, plan=cyan</td><td>Code=green, Plan=cyan, Ask=yellow, Debug=red, Review=purple</td></tr>
+            <tr><td>Subagent System</td><td><span class="tag yes">general (built-in)</span></td><td><span class="tag no">No (flat hierarchy)</span></td></tr>
+            <tr><td>Custom Agent/Mode</td><td><span class="tag yes">Yes</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Model Support</td><td>75+ providers</td><td>500+ models (Gateway)</td></tr>
+            <tr><td>Auto Model Routing</td><td><span class="tag no">No</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>BYOK</td><td><span class="tag yes">Yes</span></td><td><span class="tag yes">Yes</span></td></tr>
+            <tr><td>Free Models</td><td><span class="tag yes">Included</span></td><td><span class="tag yes">Included</span></td></tr>
+            <tr><td>Subscription</td><td>OpenCode Go $5-10/mo</td><td>Kilo Pass $19-199/mo</td></tr>
+            <tr><td>Managed Gateway</td><td>Zen (curated)</td><td>Kilo Gateway ($0+provider)</td></tr>
+            <tr><td>Enterprise</td><td>Zen workspaces beta</td><td>SSO/SCIM, audit logs</td></tr>
+            <tr><td>MCP Support</td><td><span class="tag yes">Yes</span></td><td><span class="tag yes">Yes + MCP Marketplace</span></td></tr>
+            <tr><td>Context Management</td><td>Clean, selective</td><td>Broad, comprehensive</td></tr>
+            <tr><td>Data Privacy</td><td>Privacy-first, code not stored</td><td>Cloud features process data</td></tr>
+            <tr><td>Architecture</td><td>Client-server (Hono+Effect)</td><td>OpenCode core + Kilo layer</td></tr>
+            <tr><td>Desktop Technology</td><td>Tauri (Rust)</td><td>Unknown (custom)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="tab-panel" id="tab-kilobench">
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">kilo</span> bench --leaderboard --top 18<span class="badge">Terminal Bench 2.0</span></h2>
+      <p style="color:var(--dim);font-size:.8rem;margin-bottom:16px;">
+        Kilo Code's official model evaluation results. Each model was tested on 89 terminal tasks using Kilo's real agent harness. Cost includes reasoning tokens, re-sent context, and tool call overhead.
+      </p>
+      <div class="kb-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Model</th><th>Provider</th><th>Language</th><th>Completion %</th><th>Cost</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="rank-num">1</td><td><strong>GPT-5.5</strong></td><td>OpenAI <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + PyTorch</td><td style="color:var(--success);font-weight:700;">%74.2</td><td>$72.63</td><td><span class="cost-bar" style="width:100%"></span></td></tr>
+            <tr><td class="rank-num">2</td><td><strong>Claude Opus 4.7</strong></td><td>Anthropic <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td style="color:var(--success);font-weight:700;">%70.1</td><td>$100.51</td><td><span class="cost-bar" style="width:45%"></span></td></tr>
+            <tr><td class="rank-num">3</td><td><strong>Claude Opus 4.6</strong></td><td>Anthropic <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td>%67.6</td><td>$85.19</td><td><span class="cost-bar" style="width:55%"></span></td></tr>
+            <tr><td class="rank-num">4</td><td><strong>Kimi K2.5</strong></td><td>Moonshot AI <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + PyTorch</td><td>%64.7</td><td>$104.49</td><td><span class="cost-bar" style="width:30%"></span></td></tr>
+            <tr><td class="rank-num">5</td><td><strong>Gemini 3.1 Pro</strong></td><td>Google DeepMind <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td>%60.7</td><td>$32.94</td><td><span class="cost-bar" style="width:80%"></span></td></tr>
+            <tr><td class="rank-num">6</td><td><strong>Claude Sonnet 4.6</strong></td><td>Anthropic <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td>%59.6</td><td>$36.19</td><td><span class="cost-bar" style="width:75%"></span></td></tr>
+            <tr><td class="rank-num">7</td><td><strong>GPT-5</strong></td><td>OpenAI <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + PyTorch</td><td>%55.1</td><td>$53.37</td><td><span class="cost-bar" style="width:60%"></span></td></tr>
+            <tr><td class="rank-num">8</td><td><strong>DeepSeek V4 Flash</strong></td><td>DeepSeek <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + Mojo</td><td>%54.6</td><td>$20.65</td><td><span class="cost-bar" style="width:90%"></span></td></tr>
+            <tr><td class="rank-num">9</td><td><strong>Kimi K2.6</strong></td><td>Moonshot AI <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + PyTorch</td><td>%54.4</td><td>$24.84</td><td><span class="cost-bar" style="width:88%"></span></td></tr>
+            <tr><td class="rank-num">10</td><td><strong>Gemini 2.5 Pro</strong></td><td>Google DeepMind <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td>%53.0</td><td>$26.21</td><td><span class="cost-bar" style="width:85%"></span></td></tr>
+            <tr><td class="rank-num">11</td><td><strong>Qwen3-235B</strong></td><td>Alibaba Cloud <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + PyTorch</td><td>%50.6</td><td>$30.70</td><td><span class="cost-bar" style="width:78%"></span></td></tr>
+            <tr><td class="rank-num">12</td><td><strong>MiniMax M2.7</strong></td><td>MiniMax <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + PyTorch</td><td>%49.4</td><td>$23.98</td><td><span class="cost-bar" style="width:82%"></span></td></tr>
+            <tr><td class="rank-num">13</td><td><strong>GLM-5.2</strong></td><td>Zhipu AI (Z.AI) <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + PyTorch</td><td>%47.6</td><td>$4.92</td><td><span class="cost-bar" style="width:95%"></span></td></tr>
+            <tr><td class="rank-num">14</td><td><strong>DeepSeek V4</strong></td><td>DeepSeek <span style="color:var(--dim);font-size:.65rem;">(&#x1F1E8;&#x1F1F3; China)</span></td><td>Python + Mojo</td><td>%47.6</td><td>$10.35</td><td><span class="cost-bar" style="width:92%"></span></td></tr>
+            <tr><td class="rank-num">15</td><td><strong>Claude Sonnet 4.5</strong></td><td>Anthropic <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td>%46.7</td><td>$19.60</td><td><span class="cost-bar" style="width:86%"></span></td></tr>
+            <tr><td class="rank-num">16</td><td><strong>GPT-4.7</strong></td><td>OpenAI <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + PyTorch</td><td>%44.0</td><td>$15.91</td><td><span class="cost-bar" style="width:75%"></span></td></tr>
+            <tr><td class="rank-num">17</td><td><strong>Llama 5.1 (405B)</strong></td><td>Meta <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + PyTorch</td><td>%32.6</td><td>$40.55</td><td><span class="cost-bar" style="width:50%"></span></td></tr>
+            <tr><td class="rank-num">18</td><td><strong>Mythos 5</strong></td><td>Anthropic <span style="color:var(--dim);font-size:.65rem;">(&#x1F1FA;&#x1F1F8; USA)</span></td><td>Python + JAX</td><td>%28.1</td><td>$30.82</td><td><span class="cost-bar" style="width:55%"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:.68rem;color:var(--dim);margin-top:10px;">
+        Source:         <a href="https://kilo.ai/kilobench" target="_blank" rel="noopener" style="color:var(--accent)">kilo.ai/kilobench</a> — Terminal Bench 2.0, 89 tasks. Cost: actual billed amount including reasoning tokens, re-sent context, and tool call overhead.
+        <span style="display:block;margin-top:4px;">Performance bar: cost/success ratio (green = better value).</span>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <h2><span class="prompt-sign">$</span> <span class="section-cmd">bench</span> cost-analysis --metric "value-per-dollar"<span class="badge">cost / performance</span></h2>
+      <div class="bench-grid">
+        <div class="bench-card">
+          <h3><span>&#x1F4B5;</span> Best Value</h3>
+          <p style="font-size:.8rem;margin-bottom:6px;">Highest success rate at lowest cost:</p>
+          <div style="font-size:.85rem;padding:4px 0;"><span style="color:var(--orange);">1.</span> <strong>GLM-5.2</strong> — %47.6 @ $4.92/run</div>
+          <div style="font-size:.85rem;padding:4px 0;"><span style="color:var(--orange);">2.</span> <strong>DeepSeek V4</strong> — %47.6 @ $10.35/run</div>
+          <div style="font-size:.85rem;padding:4px 0;"><span style="color:var(--orange);">3.</span> <strong>GPT-4.7</strong> — %44.0 @ $15.91/run</div>
+        </div>
+        <div class="bench-card">
+          <h3><span>&#x1F3C6;</span> Top Performance</h3>
+          <p style="font-size:.8rem;margin-bottom:6px;">Highest completion rate (regardless of cost):</p>
+          <div style="font-size:.85rem;padding:4px 0;"><span style="color:var(--orange);">1.</span> <strong>GPT-5.5</strong> — %74.2 @ $72.63/run</div>
+          <div style="font-size:.85rem;padding:4px 0;"><span style="color:var(--orange);">2.</span> <strong>Claude Opus 4.7</strong> — %70.1 @ $100.51/run</div>
+          <div style="font-size:.85rem;padding:4px 0;"><span style="color:var(--orange);">3.</span> <strong>Claude Opus 4.6</strong> — %67.6 @ $85.19/run</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);padding:16px;font-size:.78rem;">
+        <strong style="color:var(--cyan);">&#x1F50D; Important Note:</strong> The same model can score differently across agent frameworks. KiloBench measures using Kilo Code's actual tool pipeline, context window management, and retry logic. While SWE-bench Verified shows only 1.3% difference among the top 6 models, Terminal Bench 2.0 shows 20%+ difference between the leader and 10th place.
+        <span style="display:block;margin-top:8px;color:var(--dim);">&#x1F4CC; Models are mostly trained with <strong style="color:var(--text);">Python</strong>. US-based providers (<strong style="color:var(--text);">OpenAI, Anthropic, Google DeepMind, Meta</strong>) use JAX or PyTorch, while China-based providers (<strong style="color:var(--text);">DeepSeek, Alibaba, Moonshot, Zhipu, MiniMax</strong>) predominantly use PyTorch. DeepSeek differentiates with Mojo.</span>
+      </div>
+    </section>
+
+  </div>
+
+  <section>
+    <h2><span class="prompt-sign">$</span> <span class="section-cmd">cat</span> summary.md<span class="badge">summary</span></h2>
+    <div class="summary-box">
+      <p>
+        <strong>OpenCode</strong> (<span style="color:var(--secondary);">anomalyco</span>) is the groundbreaking upstream project in the AI coding agent space. With <span style="color:var(--opencode);">182k GitHub stars</span>, 460+ contributors, and 830+ releases, it has the largest community. Its 3 built-in agents (<strong style="color:var(--secondary);">build</strong>, <strong style="color:var(--accent);">plan</strong>, general) are written in TypeScript. With its client-server architecture, clean context management, and privacy-first approach, it is ideal for terminal and SSH workflows.
+      </p>
+      <p>
+        <strong>Kilo Code</strong> (<span style="color:var(--kilo);">Kilo Org</span>) is a fork built on OpenCode's solid foundation. Its 5 built-in agents (<strong style="color:var(--kilo);">Code</strong>, <strong style="color:var(--accent);">Plan</strong>, <strong style="color:var(--orange);">Ask</strong>, <strong style="color:var(--error);">Debug</strong>, <strong style="color:var(--purple);">Review</strong>) are developed in TypeScript. It adds enterprise features like cloud agents, JetBrains support (Kotlin native), 500+ models, Auto Model Routing, mobile app, team collaboration, and CI/CD integration. It provides transparent model performance data via KiloBench.
+      </p>
+      <p>
+        <span style="color:var(--orange);">&#x25B6; Your choice depends on your needs:</span> For terminal-first, privacy-first, individual use, <strong style="color:var(--opencode);">OpenCode</strong> is ideal; for JetBrains, cloud, team, and multi-platform needs, <strong style="color:var(--kilo);">Kilo Code</strong> is the better fit. Both are MIT-licensed and free; you only pay for model usage.
+      </p>
+    </div>
+  </section>
+
+</div><!-- /open-main -->
+
+<div class="open-sidebar">
+
+  <div class="sb-card">
+    <h4>session</h4>
+    <div class="sb-row"><span class="l">mode</span><span class="v">general</span></div>
+    <div class="sb-row"><span class="l">model</span><span class="v" style="font-size:.62rem;">Aviator55 Y.A</span></div>
+    <div class="sb-row"><span class="l">tokens</span><span class="v">1,234 / 8,192</span></div>
+    <div class="sb-row"><span class="l">cost</span><span class="v">$0.024</span></div>
+    <div style="margin-top:6px;"><span class="prog"><span class="done">&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;</span><span class="todo">&#x2B1D;&#x2B1D;&#x2B1D;&#x2B1D;&#x2B1D;</span></span></div>
+  </div>
+
+  <div class="sb-card">
+    <h4>agent</h4>
+    <div class="sb-agent-indicator build">&#x25C8; build</div>
+    <div style="margin-top:6px;font-size:.65rem;color:var(--dim);line-height:1.6;">
+      <span style="display:block;">&#x25B8; <span style="color:var(--accent);">plan</span> read-only</span>
+      <span style="display:block;">&#x25B8; <span style="color:var(--secondary);">build</span> full access</span>
+    </div>
+  </div>
+
+  <div class="sb-card">
+    <h4>navigation</h4>
+    <div class="sb-nav-item"><kbd>tab</kbd> <span class="action">agents</span></div>
+    <div class="sb-nav-item"><kbd>ctrl+p</kbd> <span class="action">commands</span></div>
+    <div class="sb-nav-item"><kbd>ctrl+f</kbd> <span class="action">fullscreen</span></div>
+    <div class="sb-nav-item"><kbd>esc</kbd> <span class="action">interrupt</span></div>
+  </div>
+
+  <div class="sb-card">
+    <h4>benchmarks</h4>
+    <div style="font-size:.65rem;line-height:1.8;">
+      <a href="https://kilo.ai/kilobench" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">KiloBench</a><br>
+      <a href="https://opencode.ai" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">OpenCode</a><br>
+      <a href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">GitHub</a>
+    </div>
+  </div>
+
+  <div class="sb-card" style="margin-top:auto;border-color:transparent;background:transparent;padding:10px 0;">
+    <div style="font-size:.6rem;color:var(--dim);line-height:1.6;">
+      opencode-vs-kilocode<br>
+      data July 2026
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /open-layout -->
+
+<div class="open-status">
+  <div class="st-agent b">&#x25C8; build</div>
+  <div class="st-model">Aviator55 Y.A</div>
+  <div class="st-right">
+    <span>tokens 1,234</span>
+    <span class="st-hint"><kbd>esc</kbd> interrupt</span>
+    <span class="st-hint"><kbd>ctrl+p</kbd> commands</span>
+  </div>
+</div>
+
+</div><!-- /terminal-body -->
+
+<footer>
+  <p style="color:var(--dim)">open source — comparison page &middot; data updated July 2026</p>
+  <div class="links">
+    <a href="https://opencode.ai" target="_blank" rel="noopener">OpenCode</a>
+    <a href="https://kilo.ai" target="_blank" rel="noopener">Kilo Code</a>
+    <a href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener">OpenCode GitHub</a>
+    <a href="https://github.com/Kilo-Org/kilocode" target="_blank" rel="noopener">Kilo Code GitHub</a>
+    <a href="https://kilo.ai/kilobench" target="_blank" rel="noopener">KiloBench</a>
+  </div>
+</footer>
+
+</div><!-- /terminal-window -->
+
+<script>
+// ── TYPE ANIMATION ──
+const lines = [
+  '$ diff --git opencode kilocode',
+  '$ benchmark --compare kilo opencode',
+  '# 182k stars vs 25.5k stars',
+  '> OpenCode: build(TS) plan(TS) | Kilo: Code Plan Ask Debug Review',
+  '$ kilo bench --model gpt-5.5 --run',
+  '// 89 Terminal Bench 2.0 tasks — Provider, Language & Country info added',
+];
+let li = 0, ci = 0, dir = 1;
+const el = document.getElementById('typed');
+function type() {
+  const line = lines[li];
+  if (dir === 1) {
+    ci++;
+    el.textContent = line.slice(0, ci);
+    if (ci === line.length) { dir = -1; setTimeout(type, 1800); return; }
+  } else {
+    ci--;
+    el.textContent = line.slice(0, ci);
+    if (ci === 0) { dir = 1; li = (li + 1) % lines.length; setTimeout(type, 400); return; }
+  }
+  setTimeout(type, dir === 1 ? 36 : 18);
+}
+type();
+
+// ── TABS ──
+document.querySelectorAll('.agent-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.agent-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── BAR ANIMATION ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach(b => {
+        const w = b.style.width;
+        b.style.width = '0';
+        setTimeout(() => { b.style.width = w; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.bench-card').forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
